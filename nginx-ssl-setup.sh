@@ -100,6 +100,8 @@ then
 	expect EOF"
 	openssl x509 -req -days 365 -in $csr -signkey $key -out $cert
 	cd "$cwd"
+	service nginx on
+	chkconfig nginx on
 else
 	echo "Cannot generate"
 fi
