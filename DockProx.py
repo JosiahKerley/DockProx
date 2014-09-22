@@ -1,131 +1,104 @@
-#!/usr/bin/python
-
 import os
 import sys
 import json
 import time
-import socket
-import fcntl
-import struct
-import hashlib
+import docker
+
 
 class DockProx:
 
-	##- Settings
-	iface = "eth0"
-	pollFreq = 5
-	configFile = "/etc/nginx/conf.d/default.conf"
-	ps = "/tmp/docker-ps.tmp"
-	inspect = "/tmp/docker-inspect.tmp"
-	lastHash = "0"
+	## Standard settings
+	nginxConfig = "/etc/nginx/conf.d/default.conf"
+	nginxTemplate = "nginx.config.template"
+	sslCert = "/etc/nginx/ssl/server.crt"
+	sslKey = "/etc/nginx/ssl/server.key"
+	nameKey = "Config/Image"
+	nginxReloadCommand = "service nginx reload"
+
+	## Daemon Settings
 	running = True
-	template = '''
-## Clients going to http://{NAME} or https://{NAME} will hit the Docker container {NAME}.
-upstream {NAME} {
-  server {SERVER};
-}
-server {
-  listen 80;
-  server_name {NAME};
-  rewrite ^ https://$server_name$request_uri? permanent;
-}
-server {
-  server_name {NAME};
-  listen 443 ssl;
-  ssl_certificate /etc/nginx/ssl/server.crt;
-  ssl_certificate_key /etc/nginx/ssl/server.key; 
-  gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
-  location / {
-    proxy_pass http://{NAME};
-  }
-}\n\n\n
-'''
+	pollFreq = 5
+
+	## Startup method
+	def __init__(self):
+		print("Starting...")
+		self.d = docker.Client(base_url='unix://var/run/docker.sock')
 
 
-	##- Methods
-	
-	## Gets hash of file
-	def hashfile(self, file_path):
-		if os.path.exists(file_path) == False:
-			return None
-		md5 = hashlib.md5()
-		f = open(file_path)
-		for line in f:
-			md5.update(line)
-		f.close()
-		return (str(md5.hexdigest()))
+	## Created a json string from dict
+	def dump(self,data):
+		data = json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '))
+		return(data)
 
-	## Gets ip of iface
-	def ipAddr(self,ifname):
-		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		return socket.inet_ntoa(fcntl.ioctl(
-			s.fileno(),
-			0x8915,  # SIOCGIFADDR
-			struct.pack('256s', ifname[:15])
-		)[20:24])
+	## Returns a safe name for use as hostname
+	def safeName(self,name):
+		name = name.replace(":","-")
+		name = name.replace("/","-")
+		name = name.replace("\\","-")
+		return(name)
 
-	## Builds the config file
-	def build(self):
-		## Gets ids
-		os.system("docker ps -q >%s"%(self.ps))
-		with open(self.ps,"r") as f:
-			ids_ = f.read().split("\n")
-		
-		ids_.remove('')
-		ids = ids_
-		
-		## Gets info
-		data = []
-		for id in ids:
-			os.system("docker inspect %s > %s"%(id,self.inspect))
-			with open(self.inspect,"r") as f:
-				data.append(json.loads(f.read()))
-			#os.remove(self.inspect)
-			#os.remove(self.ps)		
-		hostip = self.ipAddr(self.iface)
-		config = []
-		for item_ in data:
-			for item in item_:
-				ports = []
-				name = item["Config"]["Image"]
-				for i in item["Config"]["ExposedPorts"]:
-					ports.append(i.split("/")[0])
-					ip = item["NetworkSettings"]["IPAddress"]		
-				for port in ports:
-					if port == "80":
-						tmp = self.template.replace("{INCOMING}","%s:%s"%(hostip,port))
-						tmp = tmp.replace("{NAME}",name)
-						tmp = tmp.replace("{SERVER}","%s:%s"%(ip,port))
-						config.append(tmp)
-		conf = ""
-		for c in config:
-			conf += c
-			conf += "\n\n\n"
-		with open(self.configFile,"w") as f:
-			f.write(conf)
 
-	## Reloads the proxy
-	def reload(self):
-		os.system("service nginx reload")
+	## Parses dict for name keying
+	def nameKey2Element(self, container, path):
+		element = container
+		try:
+			for x in path.strip("/").split("/"):
+				element = element.get(x)
+		except:
+			pass
+		return(element)
 
-	## Monitors for file change
-	def monitor(self):
+
+	## Returns list of running containers
+	def runningContainers(self):
+		runningContainers = []
+		allContainers = self.d.containers(all=True)
+		for container in allContainers:
+			if "Up" in container["Status"]:
+				runningContainers.append(self.d.inspect_container(container))
+		return(runningContainers)
+
+
+	## Generates the nginx tmeplate
+	def generateTemplate(self,containers):
+		template = ""
+		fileContents = ""
+		for container in containers:
+			ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
+			name = self.nameKey2Element(container,self.nameKey)
+			with open(self.nginxTemplate,"r") as f:
+				tmp = f.read().replace("{NAME}",self.safeName(name)).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
+			template += tmp + "\n"
+		return(template)
+
+
+	## Checks to see if the config has changed
+	def templateUpdated(self,template):
+		with open(self.nginxConfig,"r") as f:
+			current = f.read()
+		if current == template:
+			return(False)
+		else:
+			return(True)
+
+	## Writes the template to the config file
+	def writeConfig(self,template):
+		with open(self.nginxConfig,"w") as f:
+			f.write(template)
+		os.system(self.nginxReloadCommand)
+
+
+	## Runs and periodically checks for changes
+	def daemon(self):
 		while self.running:
-			self.build()
-			#print self.lastHash
-			#print self.hashfile(self.configFile)
-			if not self.lastHash == self.hashfile(self.configFile):
-				#print "Reloading"
-				self.reload()
-				self.lastHash = self.hashfile(self.configFile)
+			template = self.generateTemplate(self.runningContainers())
+			if templateUpdated(template):
+				writeConfig(template)
 			time.sleep(self.pollFreq)
-	
 
 
-
-##- Run as a daemon
-d = DockProx()
-d.monitor()
-
-
-
+D = DockProx()
+D.daemon
+#print D.generateTemplate(D.runningContainers())
+#print D.nameKey2Element(D.runningContainers()[0],D.nameKey)
+#print D.dump(D.runningContainers())
