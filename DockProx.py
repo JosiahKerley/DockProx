@@ -86,9 +86,10 @@ class DockProx:
 		ports = []
 		for i in cleanPorts:
 			test = str(i[0])
-			print "Checking %s"%(test)
+			#print "Checking %s"%(test)
 			badPorts = True
 			for bad in ["22","21","25","53","161","162"]:
+				print "Is '%s' '%s'?"%(test,bat)
 				if test == bad:
 					badPorts = False
 			ports.append(test)
