@@ -19,9 +19,26 @@ class DockProx:
 	running = True
 	pollFreq = 5
 
+
+	## Pre-flight check
+	def flightCheck(self):
+		greenLight = True
+		pile = ""
+		for i in self.nginxConfig.split("/"):
+			pile += "%s/"%(i)
+			test = pile.rstrip("/")
+			if os.path.exists(test) or test == "":
+				greenLight = True
+			else:
+				print("Path %s does not exist!"%(test))
+				greenLight = False
+				exit()
+
+
 	## Startup method
 	def __init__(self):
 		print("Starting...")
+		self.flightCheck()
 		self.d = docker.Client(base_url='unix://var/run/docker.sock')
 
 
@@ -92,13 +109,13 @@ class DockProx:
 	def daemon(self):
 		while self.running:
 			template = self.generateTemplate(self.runningContainers())
-			if templateUpdated(template):
+			if self.templateUpdated(template):
 				writeConfig(template)
 			time.sleep(self.pollFreq)
 
 
 D = DockProx()
-D.daemon
+D.daemon()
 #print D.generateTemplate(D.runningContainers())
 #print D.nameKey2Element(D.runningContainers()[0],D.nameKey)
 #print D.dump(D.runningContainers())
