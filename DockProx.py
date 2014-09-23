@@ -52,6 +52,7 @@ class DockProx:
 		name = name.replace(":","-")
 		name = name.replace("/","-")
 		name = name.replace("\\","-")
+		name = name.split("")[0:63]
 		return(name)
 
 
@@ -85,12 +86,12 @@ class DockProx:
 		for container in containers:
 			try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
-				name = self.nameKey2Element(container,self.nameKey)
+				name = self.safeName(self.nameKey2Element(container,self.nameKey))
 				if name in usedNames:
 					nameCounter += 1
 					name = "%s-%s"%(name,nameCounter)
 				with open(self.nginxTemplate,"r") as f:
-					tmp = f.read().replace("{NAME}",self.safeName(name)).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
+					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
 				template += tmp + "\n"
 				usedNames.append(self.safeName(name))
 			except:
