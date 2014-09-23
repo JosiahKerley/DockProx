@@ -107,7 +107,8 @@ class DockProx:
 		usedNames = []
 		nameCounter = 0
 		for container in containers:
-			try:
+			if 1:
+			#try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
 				port = self.bestPort(ports)
@@ -119,8 +120,8 @@ class DockProx:
 					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{PORT}",port).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s"%(ip))
 				template += tmp + "\n"
 				usedNames.append(self.safeName(name))
-			except:
-				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
+			#except:
+			#	print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
 		return(template)
 
 
