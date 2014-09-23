@@ -64,7 +64,7 @@ class DockProx:
 			for x in path.strip("/").split("/"):
 				element = element.get(x)
 		except:
-			pass
+			print("Cannot fetch element!")
 		return(element)
 
 
