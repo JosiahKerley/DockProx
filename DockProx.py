@@ -92,7 +92,8 @@ class DockProx:
 				print "Is '%s' '%s'?"%(test,bad)
 				if test == bad:
 					badPorts = False
-			ports.append(test)
+			if not badPorts:
+				ports.append(test)
 		print ports
 
 
