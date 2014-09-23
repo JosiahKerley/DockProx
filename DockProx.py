@@ -116,7 +116,7 @@ class DockProx:
 					nameCounter += 1
 					name = "%s-%s"%(name,nameCounter)
 				with open(self.nginxTemplate,"r") as f:
-					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{PORT}",port).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:"%(ip,""))
+					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{PORT}",port).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s"%(ip))
 				template += tmp + "\n"
 				usedNames.append(self.safeName(name))
 			except:
