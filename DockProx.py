@@ -86,10 +86,8 @@ class DockProx:
 		ports = []
 		for i in cleanPorts:
 			test = str(i[0])
-			#print "Checking %s"%(test)
 			badPorts = True
 			for bad in ["22","21","25","53","161","162"]:
-				#print "Is '%s' '%s'?"%(test,bad)
 				if test == bad:
 					badPorts = False
 			if badPorts:
@@ -113,16 +111,14 @@ class DockProx:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
 				port = self.bestPort(ports)
-				print "I LIKE PORT %s!!!!!!!!!!!!!!!!!!!!!!"%(port)
 				name = self.safeName(self.nameKey2Element(container,self.nameKey))
 				if name in usedNames:
 					nameCounter += 1
 					name = "%s-%s"%(name,nameCounter)
 				with open(self.nginxTemplate,"r") as f:
-					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
+					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{PORT}",port).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
 				template += tmp + "\n"
 				usedNames.append(self.safeName(name))
-				#print name
 			except:
 				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
 		return(template)
