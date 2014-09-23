@@ -97,6 +97,7 @@ class DockProx:
 			for test in portOrder:
 				if port == test:
 					return(port)
+		print "Hey!!!!! %s"%(port)
 		return(port[0])
 
 
