@@ -8,5 +8,5 @@ ADD html /var/www/html
 RUN apt-get install -y apache2
 
 EXPOSE 80 22
-ENTRYPOINT ["/usr/sbin/httpd"]
-CMD ["/usr/sbin/httpd"]
+ENTRYPOINT ["/etc/init.d/apache2 start"]
+CMD ["/etc/init.d/apache2 start"]
