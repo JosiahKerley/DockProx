@@ -10,6 +10,7 @@ class DockProx:
 	## Standard settings
 	nginxConfig = "/etc/nginx/conf.d/default.conf"
 	nginxTemplate = "nginx.config.template"
+	nginxTemplateHeader = "nginx.config-header.template"
 	sslCert = "/etc/nginx/ssl/server.crt"
 	sslKey = "/etc/nginx/ssl/server.key"
 	nameKey = "Config/Image"
@@ -53,7 +54,7 @@ class DockProx:
 		name = name.replace(":","-")
 		name = name.replace("/","-")
 		name = name.replace("\\","-")
-		name = name[0:15]
+		name = name[0:63]
 		return(name)
 
 
@@ -103,7 +104,12 @@ class DockProx:
 
 	## Generates the nginx tmeplate
 	def generateTemplate(self,containers):
-		template = ""
+		try:
+			with open(self.nginxTemplateHeader,"r") as f:
+				template = f.read()
+
+		except:
+			template = ""
 		fileContents = ""
 		usedNames = []
 		nameCounter = 0
