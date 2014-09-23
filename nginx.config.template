@@ -1,6 +1,6 @@
 ## Clients going to http://{NAME} or https://{NAME} will hit the Docker container {NAME}.
 upstream {NAME} {
-  server {SERVER}:{PORT};
+  server {SERVER}{PORT};
 }
 server {
   listen 80;
