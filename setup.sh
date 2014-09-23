@@ -9,5 +9,5 @@ service docker start
 chkconfig docker on
 pip install docker-py
 bash nginx-ssl-setup.sh
-bash build-containers.sh
+bash build-containers.sh &
 python DockProx.py &
