@@ -81,17 +81,18 @@ class DockProx:
 		template = ""
 		fileContents = ""
 		usedNames = []
+		nameCounter = 0
 		for container in containers:
 			try:
-				if not self.safeName(name) in usedNames:
-					ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
-					name = self.nameKey2Element(container,self.nameKey)
-					with open(self.nginxTemplate,"r") as f:
-						tmp = f.read().replace("{NAME}",self.safeName(name)).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
-					template += tmp + "\n"
-					usedNames.append(self.safeName(name))
-				else:
-					print("Cannot use name '%s' in template!"%(self.safeName(name)))
+				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
+				name = self.nameKey2Element(container,self.nameKey)
+				if name in usedNames:
+					nameCounter += 1
+					name = "%s-%s"%(name,nameCounter)
+				with open(self.nginxTemplate,"r") as f:
+					tmp = f.read().replace("{NAME}",self.safeName(name)).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
+				template += tmp + "\n"
+				usedNames.append(self.safeName(name))
 			except:
 				print("Cannot create '%s' template!"%(self.safeName(name)))
 		return(template)
