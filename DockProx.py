@@ -94,7 +94,12 @@ class DockProx:
 					badPorts = False
 			if badPorts:
 				ports.append(test)
-		print ports
+		portOrder = ['80','443','8080','8000','9001','12345']
+		for port in ports:
+			for test in portOrder:
+				if port == test:
+					return(port)
+		return(port[80])
 
 
 	## Generates the nginx tmeplate
