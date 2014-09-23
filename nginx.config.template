@@ -1,6 +1,6 @@
 ## Clients going to http://{NAME} or https://{NAME} will hit the Docker container {NAME}.
 upstream {NAME} {
-  server {SERVER};
+  server {SERVER}:{PORT};
 }
 server {
   listen 80;
@@ -14,7 +14,7 @@ server {
   ssl_certificate_key {KEYPATH};
   gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
   location / {
-    proxy_pass http://{NAME}:{PORT};
+    proxy_pass http://{NAME};
   }
 }
 
