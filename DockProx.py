@@ -87,7 +87,7 @@ class DockProx:
 		for container in containers:
 			try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
-				ports = self.nameKey2Element(container,"NetworkSettings/Ports").split("/")[0]
+				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
 				print ports
 				name = self.safeName(self.nameKey2Element(container,self.nameKey))
 				if name in usedNames:
