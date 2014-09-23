@@ -98,7 +98,7 @@ class DockProx:
 				template += tmp + "\n"
 				usedNames.append(self.safeName(name))
 			except:
-				print("Cannot create '%s' template!"%(self.safeName(name)))
+				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
 		return(template)
 
 
