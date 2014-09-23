@@ -7,6 +7,7 @@ yum update -y
 yum install -y docker-io
 service docker start
 chkconfig docker on
+pip install docker-py
 bash nginx-ssl-setup.sh
 bash build-containers.sh
 python DockProx.py &
