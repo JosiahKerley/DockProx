@@ -1,6 +1,9 @@
 #!/bin/bash
 
 ## Setup
+docker build -t="kibana" github.com/balsamiq/docker-kibana
+docker run -d "kibana"
+
 docker build -t="ejabberd" github.com/rroemhild/docker-ejabberd
 docker run -d "ejabberd"
 
@@ -18,7 +21,6 @@ docker run -d "bambooinvoice"
 
 docker pull turnkeylinux/observium-13.0
 docker run -d "observium"
-
 
 docker build -t="etherpad" github.com/arcus-io/docker-etherpad
 docker run -d "etherpad"
