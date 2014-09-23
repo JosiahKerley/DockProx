@@ -10,8 +10,8 @@ server {
 server {
   server_name {NAME};
   listen 443 ssl;
-  ssl_certificate {CERTPATH}
-  ssl_certificate_key {KEYPATH}
+  ssl_certificate {CERTPATH};
+  ssl_certificate_key {KEYPATH};
   gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
   location / {
     proxy_pass http://{NAME};
