@@ -97,7 +97,7 @@ class DockProx:
 			for test in portOrder:
 				if port == test:
 					return(port)
-		return(port[80])
+		return(port[0])
 
 
 	## Generates the nginx tmeplate
