@@ -113,6 +113,7 @@ class DockProx:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
 				port = self.bestPort(ports)
+				print "I LIKE PORT %s!!!!!!!!!!!!!!!!!!!!!!"%(port)
 				name = self.safeName(self.nameKey2Element(container,self.nameKey))
 				if name in usedNames:
 					nameCounter += 1
