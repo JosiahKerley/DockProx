@@ -113,7 +113,7 @@ class DockProx:
 		while self.running:
 			template = self.generateTemplate(self.runningContainers())
 			if self.templateUpdated(template):
-				writeConfig(template)
+				self.writeConfig(template)
 			time.sleep(self.pollFreq)
 
 
