@@ -49,6 +49,7 @@ class DockProx:
 
 	## Returns a safe name for use as hostname
 	def safeName(self,name):
+		name = name.replace(" ","-")
 		name = name.replace(":","-")
 		name = name.replace("/","-")
 		name = name.replace("\\","-")
