@@ -81,11 +81,14 @@ class DockProx:
 		template = ""
 		fileContents = ""
 		for container in containers:
-			ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
-			name = self.nameKey2Element(container,self.nameKey)
-			with open(self.nginxTemplate,"r") as f:
-				tmp = f.read().replace("{NAME}",self.safeName(name)).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
-			template += tmp + "\n"
+			try:
+				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
+				name = self.nameKey2Element(container,self.nameKey)
+				with open(self.nginxTemplate,"r") as f:
+					tmp = f.read().replace("{NAME}",self.safeName(name)).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
+				template += tmp + "\n"
+			except:
+				print("Cannot create '%s' template!"%(self.safeName(name)))
 		return(template)
 
 
