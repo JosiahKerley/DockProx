@@ -85,6 +85,7 @@ class DockProx:
 			cleanPorts.append(i.split("/"))
 		ports = []
 		for i in cleanPorts:
+			print "Checking %s"%(i)
 			badPorts = True
 			for bad in ["22","21","25","53","161","162"]:
 				if i == bad:
@@ -112,7 +113,7 @@ class DockProx:
 					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s:%s"%(ip,"80"))
 				template += tmp + "\n"
 				usedNames.append(self.safeName(name))
-				print name
+				#print name
 			except:
 				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
 		return(template)
