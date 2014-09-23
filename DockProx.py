@@ -81,6 +81,7 @@ class DockProx:
 	## Makes an educated guess as to what the best port to use is
 	def bestPort(self,ports):
 		cleanPorts = []
+		port = "80"
 		for i in ports.keys():
 			cleanPorts.append(i.split("/"))
 		ports = []
