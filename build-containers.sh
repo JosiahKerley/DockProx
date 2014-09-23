@@ -1,8 +1,30 @@
 #!/bin/bash
 
 ## Setup
+docker build -t="ejabberd" github.com/rroemhild/docker-ejabberd
+docker run -d "ejabberd"
+
+docker build -t="ushahidi" github.com/ushahidi/docker-ushahidi-platform
+docker run -d "ushahidi"
+
+docker build -t="limesurvey" github.com/domachine/docker-limesurvey-nginx
+docker run -d "limesurvey"
+
+docker build -t="jenkins" github.com/aespinosa/docker-jenkins
+docker run -d "jenkins"
+
+docker pull turnkeylinux/bambooinvoice-13.0
+docker run -d "bambooinvoice"
+
+docker pull turnkeylinux/observium-13.0
+docker run -d "observium"
+
+
 docker build -t="etherpad" github.com/arcus-io/docker-etherpad
 docker run -d "etherpad"
+
+docker build -t="icinga" github.com/Icinga/icinga-docker
+docker run -d "icinga"
 
 docker build -t="elgg" github.com/tixel/docker-elgg
 docker run -d "elgg"
@@ -33,6 +55,18 @@ docker run -d "dokuwiki"
 
 docker build -t="observium" github.com/wbouzane/observium
 docker run -d "observium"
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Display
