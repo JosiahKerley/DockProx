@@ -52,7 +52,7 @@ class DockProx:
 		name = name.replace(":","-")
 		name = name.replace("/","-")
 		name = name.replace("\\","-")
-		name = name.split("")[0:63]
+		name = name[0:63]
 		return(name)
 
 
