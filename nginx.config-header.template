@@ -1,25 +1,5 @@
 ## These configs will appear at the top of the config file
 
-/*
-upstream apsd-collab00.ngid.centurylink.net {
-  server apsd-collab00.ngid.centurylink.net:80;
-}
-server {
-  listen 80;
-  server_name apsd-collab00.ngid.centurylink.net;
-  rewrite ^ https://$server_name$request_uri? permanent;
-}
-server {
-  server_name apsd-collab00.ngid.centurylink.net;
-  listen 443 ssl;
-  ssl_certificate {CERTPATH};
-  ssl_certificate_key {KEYPATH};
-  gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
-  location / {
-    proxy_pass http://apsd-collab00.ngid.centurylink.net;
-  }
-}
-*/
 
 ## END OF HEADER
 
