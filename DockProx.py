@@ -85,12 +85,13 @@ class DockProx:
 			cleanPorts.append(i.split("/"))
 		ports = []
 		for i in cleanPorts:
-			print "Checking %s"%(i[0])
+			test = str(i[0])
+			print "Checking %s"%(test)
 			badPorts = True
 			for bad in ["22","21","25","53","161","162"]:
-				if i[0] == bad:
+				if test == bad:
 					badPorts = False
-			ports.append(i[0])
+			ports.append(test)
 		print ports
 
 
