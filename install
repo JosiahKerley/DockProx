@@ -17,6 +17,14 @@ bash build-containers-ngid.sh &
 #bash build-containers.sh &
 
 
+## Install Docker Startup
+cat dockerstartup.sh > /usr/bin/dockerstartup
+chmod +x /usr/bin/dockprox
+cat dockerstartup.init > /etc/init.d/dockerstartup
+chmod +x /etc/init.d/dockerstartup
+
+
+
 ## Install DockProx
 mkdir -p /etc/dockprox
 cp ./*.template /etc/dockprox/
@@ -28,8 +36,10 @@ chmod +x /etc/init.d/dockprox
 
 ## Setup services
 chkconfig docker on
+chkconfig dockerstartup on
 chkconfig nginx on
 chkconfig dockprox on
 service docker restart
+service dockerstartup restart
 service nginx restart
 service dockprox restart
