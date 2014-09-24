@@ -11,6 +11,12 @@ csr=server.csr
 pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
 
 
+## Sanity Check
+if [ -f $cert ] && [ -f $key ] && [ -f $csr ]
+then
+	exit 1
+if
+
 ## SSL Details
 country=
 state=
@@ -102,6 +108,7 @@ then
 	cd "$cwd"
 	service nginx on
 	chkconfig nginx on
+	exit 0
 else
 	echo "Cannot generate"
 fi
