@@ -9,8 +9,8 @@ class DockProx:
 
 	## Standard settings
 	nginxConfig = "/etc/nginx/conf.d/default.conf"
-	nginxTemplate = "nginx.config.template"
-	nginxTemplateHeader = "nginx.config-header.template"
+	nginxTemplate = "/etc/dockprox/nginx.config.template"
+	nginxTemplateHeader = "/etc/dockprox/nginx.config-header.template"
 	sslCert = "/etc/nginx/ssl/server.crt"
 	sslKey = "/etc/nginx/ssl/server.key"
 	nameKey = "Config/Image"

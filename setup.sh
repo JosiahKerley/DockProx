@@ -10,5 +10,15 @@ chkconfig docker on
 pip install docker-py
 bash nginx-ssl-setup.sh
 #bash build-containers.sh &
+
+mkdir -p /etc/dockprox
+cp ./*.template /etc/dockprox/
+
 bash build-containers-ngid.sh &
-python DockProx.py &
+#python DockProx.py &
+
+cat DockProx.py > /usr/bin/dockprox
+chmod +x /usr/bin/dockprox
+
+cat dockprox.init > /etc/init.d/dockprox
+chmod +x /etc/init.d/dockprox

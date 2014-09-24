@@ -1,0 +1,23 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	new file:   Containers/docker-collabtive
+#	new file:   Containers/docker-elgg
+#	new file:   Containers/docker-etherpad
+#	new file:   Containers/docker-gitlab
+#	new file:   Containers/docker-icescrum
+#	new file:   Containers/docker-moodle
+#	new file:   Containers/docker-otrs
+#	new file:   Containers/docker-owncloud
+#	new file:   Containers/docker-php5-nginx-dokuwiki
+#	new file:   Containers/docker-redmine
+#	new file:   Containers/observium
+#
+# Changes not staged for commit:
+#	modified:   nginx-ssl-setup.sh
+#
+
