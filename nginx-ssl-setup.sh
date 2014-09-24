@@ -11,12 +11,6 @@ csr=server.csr
 pass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`
 
 
-## Sanity Check
-if [ -f $cert ] && [ -f $key ] && [ -f $csr ]
-then
-	exit 1
-if
-
 ## SSL Details
 country=
 state=
@@ -62,6 +56,13 @@ else
 		continue=false
 	fi
 fi
+
+## Sanity Check
+if [ -f $cert ] && [ -f $key ] && [ -f $csr ]
+then
+	echo "SSL keys already in place!"
+	continue=false
+if
 
 
 ##- Setup cert
@@ -111,6 +112,7 @@ then
 	exit 0
 else
 	echo "Cannot generate"
+	exit 1
 fi
 
 
