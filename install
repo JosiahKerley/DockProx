@@ -1,0 +1,35 @@
+#!/bin/bash
+
+
+## Setup initial apps
+rpm -iUvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+yum update -y
+yum install -y docker-io python-pip
+pip install docker-py
+
+
+## Setup nginx
+bash nginx-ssl-setup.sh
+
+
+## Build containers
+bash build-containers-ngid.sh &
+#bash build-containers.sh &
+
+
+## Install DockProx
+mkdir -p /etc/dockprox
+cp ./*.template /etc/dockprox/
+cat DockProx.py > /usr/bin/dockprox
+chmod +x /usr/bin/dockprox
+cat dockprox.init > /etc/init.d/dockprox
+chmod +x /etc/init.d/dockprox
+
+
+## Setup services
+chkconfig docker on
+chkconfig nginx on
+chkconfig dockprox on
+service docker restart
+service nginx restart
+service dockprox restart
