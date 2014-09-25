@@ -9,6 +9,8 @@ service docker start
 chkconfig docker on
 pip install docker-py
 bash nginx-ssl-setup.sh
+cat nuke-docker.sh > /usr/bin/nuke-docker
+chmod +x /usr/bin/nuke-docker
 #bash build-containers.sh &
 
 mkdir -p /etc/dockprox
