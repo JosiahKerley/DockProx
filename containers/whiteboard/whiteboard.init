@@ -1,0 +1,12 @@
+#!/bin/bash
+# chkconfig: 2345 90 90
+# description: whiteboard
+### BEGIN INIT INFO# Provides: program_name
+# Required-Start: network
+# Required-Stop: network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6# Description: Start the program
+### END INIT INFO
+
+#/bin/su whiteboard -c "java -jar /home/whiteboard/whiteboard.war > /var/log/whiteboard.log 2>&1 &"
+/bin/su whiteboard -c "java -jar /home/whiteboard/whiteboard.war  2>&1 &"
