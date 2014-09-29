@@ -1,12 +1,23 @@
 #FROM ubuntu:10.04
-FROM ubuntu
+#FROM ubuntu
+FROM centos:centos6
 MAINTAINER josiahkerley@gmail.com
 
-RUN apt-get -y update
+#RUN apt-get -y update
+#RUN mkdir -p /var/www/html/
+#ADD html /var/www/html
+#RUN apt-get install -y apache2
+
 RUN mkdir -p /var/www/html/
 ADD html /var/www/html
-RUN apt-get install -y apache2
+ADD run.sh /run.sh
+RUN yum install -y httpd
 
 EXPOSE 80 22
-ENTRYPOINT ["/etc/init.d/apache2 start"]
-CMD ["/etc/init.d/apache2 start"]
+#CMD ["/bin/bash"]
+#ENTRYPOINT ["/bin/bash"]
+
+#ENTRYPOINT ["/etc/init.d/apache2","start"]
+ENTRYPOINT ["/bin/bash","/run.sh"]
+CMD ["/bin/bash","/run.sh"]
+
