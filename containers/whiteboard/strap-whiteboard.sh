@@ -4,10 +4,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
 yum install -y java-1.6.0-openjdk
 useradd --create-home whiteboard
-#cat whiteboard-long-polling.war > /home/whiteboard/whiteboard.war
 clear
 echo Copying war file...
-cat whiteboard-streaming.war > /home/whiteboard/whiteboard.war
+cat whiteboard-long-polling.war > /home/whiteboard/whiteboard.war
+#cat whiteboard-streaming.war > /home/whiteboard/whiteboard.war
 sleep 3
 cat serve.sh > /home/whiteboard/serve.sh
 cat whiteboard.init > /etc/init.d/whiteboard
