@@ -15,7 +15,6 @@ docker build -t="apsd-meeting.ngid.centurylink.net" ./containers/bigbluebutton
 docker run -d "apsd-meeting.ngid.centurylink.net"
 
 
-
 ## Display
 clear
 docker images
