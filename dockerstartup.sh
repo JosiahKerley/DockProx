@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Kills Contianers
+docker kill `docker ps -q`
+
 while read entry
 do
 	name=`echo $entry | cut -d , -f1`
