@@ -1,20 +1,36 @@
 #!/bin/bash
 
 
-## Setup
-docker build -t="apsd-etherpad.ngid.centurylink.net" github.com/arcus-io/docker-etherpad
-docker run -d "apsd-etherpad.ngid.centurylink.net"
-mkdir -p /media/docker/etherpad/
-chown -R docker /media/docker
+##- Setup
 
-docker build -t="apsd-collab00.ngid.centurylink.net" ./containers/docker-lampstack
-docker run -d --no-cache=true "apsd-collab00.ngid.centurylink.net"
+## Etherpad
+name=apsd-etherpad.ngid.centurylink.net
+startup=/etc/dockerstartup-persistant
+share=/media/docker/etherpad/var
+docker build -t="$name" --no-cache github.com/arcus-io/docker-etherpad
+mkdir -p "$share"
+if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/opt/etherpad/var" >> "$startup"
 
-docker build -t="apsd-whiteboard.ngid.centurylink.net" ./containers/whiteboard
-docker run -d "apsd-whiteboard.ngid.centurylink.net"
 
-docker build -t="apsd-meeting.ngid.centurylink.net" ./containers/bigbluebutton
-docker run -d "apsd-meeting.ngid.centurylink.net"
+## Splash
+name=apsd-collab00.ngid.centurylink.net
+startup=/etc/dockerstartup-persistant
+share=/media/docker/splash/html
+docker build -t="$name" --no-cache ./containers/docker-lampstack
+mkdir -p "$share"
+if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/var/www/html" >> "$startup"
+
+
+## Whiteboard
+name=apsd-whiteboard.ngid.centurylink.net
+startup=/etc/dockerstartup
+docker build -t="$name" --no-cache ./containers/whiteboard
+docker run -d "$name"
+
+
+## Meeting
+#docker build -t="apsd-meeting.ngid.centurylink.net" ./containers/bigbluebutton
+
 
 
 ## Display
