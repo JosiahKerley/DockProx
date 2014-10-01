@@ -9,7 +9,7 @@ startup=/etc/dockerstartup-persistant
 share=/media/docker/etherpad/var
 docker build -t="$name" --no-cache github.com/arcus-io/docker-etherpad
 mkdir -p "$share"
-if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/opt/etherpad/var" >> "$startup"
+if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/opt/etherpad/var" >> "$startup" ; fi
 
 
 ## Splash
@@ -18,7 +18,7 @@ startup=/etc/dockerstartup-persistant
 share=/media/docker/splash/html
 docker build -t="$name" --no-cache ./containers/splash
 mkdir -p "$share"
-if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/var/www/html" >> "$startup"
+if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/var/www/html" >> "$startup" ; fi
 
 
 ## Whiteboard
