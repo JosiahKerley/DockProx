@@ -7,7 +7,7 @@
 name=apsd-etherpad.ngid.centurylink.net
 startup=/etc/dockerstartup-persistant
 share=/media/docker/etherpad/var
-docker build -t="$name" --no-cache ./containers/etherpad-lite
+docker build -t="$name" --no-cache ./containers/etherpad-lite &
 mkdir -p "$share"
 if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/opt/etherpad/var" >> "$startup" ; fi
 
@@ -16,7 +16,7 @@ if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/opt/etherpad/var" >>
 name=apsd-collab00.ngid.centurylink.net
 startup=/etc/dockerstartup-persistant
 share=/media/docker/splash/html
-docker build -t="$name" --no-cache ./containers/splash
+docker build -t="$name" --no-cache ./containers/splash &
 mkdir -p "$share"
 if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/var/www/html" >> "$startup" ; fi
 
@@ -24,7 +24,7 @@ if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/var/www/html" >> "$s
 ## Whiteboard
 name=apsd-whiteboard.ngid.centurylink.net
 startup=/etc/dockerstartup
-docker build -t="$name" --no-cache ./containers/whiteboard
+docker build -t="$name" --no-cache ./containers/whiteboard &
 docker run -d "$name"
 
 
@@ -37,3 +37,4 @@ docker run -d "$name"
 clear
 docker images
 docker ps
+service dockprox restart
