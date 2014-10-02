@@ -114,11 +114,13 @@ class DockProx:
 			template = ""
 		fileContents = ""
 		usedNames = []
+		namePids = []
 		nameCounter = 0
 		for container in containers:
 			try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
+				pid = self.nameKey2Element(container,"Container")
 				port = self.bestPort(ports)
 				name = self.safeName(self.nameKey2Element(container,self.nameKey))
 				if name in usedNames:
@@ -128,14 +130,12 @@ class DockProx:
 					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{PORT}",port).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s"%(ip))
 				template += tmp + "\n"
 				usedNames.append(self.safeName(name))
+				usedNames.append(self.namePids({"name":name,"value":pid}))
 			except:
 				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
 			try:
-				json-data = []
-				for name in usedNames:
-					json-data.append({"name":name,"value":name}
 				with open("/tmp/DockProx/names.json","w") as f:
-					f.write(json.dumps(json-data))
+					f.write(json.dumps(namePids))
 			except:
 				print("Cannot build json")
 
