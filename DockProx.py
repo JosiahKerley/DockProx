@@ -117,10 +117,12 @@ class DockProx:
 		namePids = []
 		nameCounter = 0
 		for container in containers:
+			pid = self.nameKey2Element(container,"Container")
+			print pid
 			try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
-				pid = self.nameKey2Element(container,"Container")
+				#pid = self.nameKey2Element(container,"Container")
 				port = self.bestPort(ports)
 				name = self.safeName(self.nameKey2Element(container,self.nameKey))
 				if name in usedNames:
