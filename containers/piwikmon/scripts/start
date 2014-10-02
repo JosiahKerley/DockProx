@@ -1,0 +1,80 @@
+#!/bin/bash
+# -----------------------------------------------------------------------------
+# docker-piwik /start script
+#
+# Will setup database, lock down root user and create a piwik user. Also backs
+# up the config file if everything is in place and is second run. Will also
+# restore everything if we have all the data on a new docker instance.
+#
+# Authors: Isaac Bythewood
+# Updated: Aug 19th, 2014
+# -----------------------------------------------------------------------------
+
+
+# Copy over initial databases if not already on data volume, this means we have
+# a completely new system. However, if we have the mysql databases then it might
+# be our second run after config and copy over our config.ini.php. If we have
+# both of those though then check to see if the config file is in the Piwik
+# config dir and if it isn't copy it there cause everything else is already set.
+if [ ! -d /data/mysql ]
+then
+    cp -r -p /var/lib/mysql /data/mysql
+elif [ ! -f /data/config.ini.php ]
+then
+    cp /srv/www/piwik/config/config.ini.php /data/config.ini.php
+elif [ ! -f /srv/www/piwik/config.ini.php ]
+then
+    cp /data/config.ini.php /srv/www/piwik/config/config.ini.php
+    chown www-data:www-data /srv/www/piwik/config/config.ini.php
+fi
+
+
+# Lock down our mysql root account.
+if [ ! -f /data/mysql_root_password.txt ]
+then
+    /usr/bin/mysqld_safe &
+    sleep 3
+
+    MYSQL_ROOT_PASSWORD=`pwgen -c -n -1 15`
+    echo $MYSQL_ROOT_PASSWORD > /data/mysql_root_password.txt
+    mysqladmin password $MYSQL_ROOT_PASSWORD
+    mysql --password=$MYSQL_ROOT_PASSWORD -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+
+    killall mysqld
+    sleep 3
+fi
+
+
+# Setup our piwik user and database also echo out our settings for easy use
+if [ ! -f /data/piwik_password.txt ]
+then
+    /usr/bin/mysqld_safe &
+    sleep 3
+
+    MYSQL_ROOT_PASSWORD=`cat /data/mysql_root_password.txt`
+
+    PIWIK_PASSWORD=`pwgen -c -n -1 15`
+    echo $PIWIK_PASSWORD > /data/piwik_password.txt
+    mysql --password=$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE piwik;"
+    mysql --password=$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON piwik.* To 'piwik'@'localhost' IDENTIFIED BY '$PIWIK_PASSWORD';"
+
+    killall mysqld
+    sleep 3
+    
+    echo
+    echo "# ------------------------------------------------------------------------------"
+    echo "# Database Settings"
+    echo "#"
+    echo "# Username: piwik"
+    echo "# Password: $PIWIK_PASSWORD"
+    echo "# Database: piwik"
+    echo "#"
+    echo "# Connect to the server now to complete the Piwik setup."
+    echo "# ------------------------------------------------------------------------------"
+    echo
+fi
+
+
+# Run supervisor which maintains nginx, mysql and php5-fpm
+/usr/bin/supervisord
+
