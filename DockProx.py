@@ -130,6 +130,15 @@ class DockProx:
 				usedNames.append(self.safeName(name))
 			except:
 				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
+			try:
+				json-data = []
+				for name in usedNames:
+					json-data.append({"name":name,"value":name}
+				with open("/tmp/DockProx/names.json","w") as f:
+					f.write(json.dumps(json-data))
+			except:
+				print("Cannot build json")
+
 		return(template)
 
 
