@@ -117,9 +117,8 @@ class DockProx:
 		namePids = []
 		nameCounter = 0
 		for container in containers:
-			pid = self.nameKey2Element(container,"Container")
+			pid = self.nameKey2Element(container,"Id")
 			print pid
-			print container
 			try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
