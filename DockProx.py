@@ -117,8 +117,6 @@ class DockProx:
 		namePids = []
 		nameCounter = 0
 		for container in containers:
-			pid = self.nameKey2Element(container,"Id")
-			print pid
 			try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
@@ -136,7 +134,7 @@ class DockProx:
 			except:
 				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
 			try:
-				with open("/tmp/DockProx/names.json","w") as f:
+				with open("/tmp/DockProx/running.json","w") as f:
 					f.write(json.dumps(namePids))
 			except:
 				print("Cannot build json")
