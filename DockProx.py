@@ -120,8 +120,7 @@ class DockProx:
 			try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
-				pid = self.nameKey2Element(container,"Container")
-				print pid
+				pid = self.nameKey2Element(container,"Id")
 				port = self.bestPort(ports)
 				name = self.safeName(self.nameKey2Element(container,self.nameKey))
 				if name in usedNames:
