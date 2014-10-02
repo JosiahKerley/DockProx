@@ -134,8 +134,9 @@ class DockProx:
 			except:
 				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
 			try:
-				with open("/tmp/DockProx/running.json","w") as f:
-					f.write(json.dumps(namePids))
+				if not namePids == []:
+					with open("/tmp/DockProx/running.json","w") as f:
+						f.write(json.dumps(namePids))
 			except:
 				print("Cannot build json")
 
