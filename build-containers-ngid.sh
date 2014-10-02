@@ -7,7 +7,7 @@
 name=apsd-etherpad.ngid.centurylink.net
 startup=/etc/dockerstartup-persistant
 share=/media/docker/etherpad/var
-docker build -t="$name" --no-cache github.com/arcus-io/docker-etherpad
+docker build -t="$name" --no-cache ./containers/etherpad-lite
 mkdir -p "$share"
 if ! grep -qe "$name" "$startup" ; then echo "$name,$share:/opt/etherpad/var" >> "$startup" ; fi
 
