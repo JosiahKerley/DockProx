@@ -119,6 +119,7 @@ class DockProx:
 		for container in containers:
 			pid = self.nameKey2Element(container,"Container")
 			print pid
+			print container
 			try:
 				ip = self.nameKey2Element(container,"NetworkSettings/IPAddress")
 				ports = self.nameKey2Element(container,"NetworkSettings/Ports")
@@ -132,7 +133,7 @@ class DockProx:
 					tmp = f.read().replace("{NAME}",name).replace("{IP}",ip).replace("{PORT}",port).replace("{CERTPATH}",self.sslCert).replace("{KEYPATH}",self.sslKey).replace("{SERVER}","%s"%(ip))
 				template += tmp + "\n"
 				usedNames.append(self.safeName(name))
-				usedNames.append(self.namePids({"name":name,"value":pid}))
+				namePids.append({"name":name,"value":pid})
 			except:
 				print("Cannot create '%s' template!"%(self.safeName(self.safeName(self.nameKey2Element(container,self.nameKey)))))
 			try:
