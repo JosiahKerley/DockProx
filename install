@@ -13,24 +13,24 @@ bash nginx-ssl-setup.sh
 
 
 ## Build containers
-bash build-containers-ngid.sh &
-#bash build-containers.sh &
+bash DockerForge/build-containers-ngid.sh &
+#bash DockerForge/build-containers.sh &
 
 
 ## Install Docker Startup
-cat dockerstartup.sh > /usr/bin/dockerstartup
+cat other/dockerstartup.sh > /usr/bin/dockerstartup
 chmod +x /usr/bin/dockprox
-cat dockerstartup.init > /etc/init.d/dockerstartup
+cat other/dockerstartup.init > /etc/init.d/dockerstartup
 chmod +x /etc/init.d/dockerstartup
 
 
 
 ## Install DockProx
 mkdir -p /etc/dockprox
-cp ./*.template /etc/dockprox/
+cp other/*.template /etc/dockprox/
 cat DockProx.py > /usr/bin/dockprox
 chmod +x /usr/bin/dockprox
-cat dockprox.init > /etc/init.d/dockprox
+cat other/dockprox.init > /etc/init.d/dockprox
 chmod +x /etc/init.d/dockprox
 
 
