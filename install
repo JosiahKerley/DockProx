@@ -1,6 +1,12 @@
 #!/bin/bash
 
 
+## Setup Dirs
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CD=$PWD
+cd $DIR
+
+
 ## Setup initial apps
 rpm -iUvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 yum update -y
