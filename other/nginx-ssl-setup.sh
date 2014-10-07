@@ -22,7 +22,6 @@ email=
 optCompany=
 
 
-##- Prereqs
 
 ## Expect
 if ! which expect
