@@ -36,11 +36,11 @@ else
 fi
 
 ## OpenSSL
-if [ "`which openssl`" == "" ]
+if ! which openssl
 then
 	yum install -y openssl || apt-get install -y openssl
 else
-	if [ "`which openssl`" == "" ]
+	if ! which openssl
 	then
 		continue=false
 	fi
