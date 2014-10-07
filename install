@@ -15,7 +15,7 @@ pip install docker-py
 
 
 ## Setup nginx
-bash nginx-ssl-setup.sh
+bash other/nginx-ssl-setup.sh
 
 
 ## Build containers
