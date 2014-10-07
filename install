@@ -16,7 +16,10 @@ pip install docker-py
 
 ## Setup nginx
 bash other/nginx-ssl-setup.sh
-
+iptables -I INPUT 5 -i eth0 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -I INPUT 5 -i eth0 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -I INPUT 5 -i eth0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+service iptables save
 
 ## Build containers
 bash DockerForge/build-containers-ngid.sh &
