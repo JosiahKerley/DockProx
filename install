@@ -24,11 +24,12 @@ bash DockerForge/build-containers-ngid.sh &
 
 
 ## Install Docker Startup
-cat other/dockerstartup.sh > /usr/bin/dockerstartup
-chmod +x /usr/bin/dockprox
-cat other/dockerstartup.init > /etc/init.d/dockerstartup
+cat DockerStartup/dockerstartup.sh > /usr/bin/dockerstartup
+chmod +x /usr/bin/dockerstartup
+cat DockerStartup/dockerstartup.init > /etc/init.d/dockerstartup
 chmod +x /etc/init.d/dockerstartup
-
+cat DockerStartup/dockerstartup-persistant > /etc/dockerstartup-persistant
+cat DockerStartup/dockerstartup > /etc/dockerstartup
 
 
 ## Install DockProx
