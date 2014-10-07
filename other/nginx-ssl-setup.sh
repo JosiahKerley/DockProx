@@ -47,11 +47,11 @@ else
 fi
 
 ## Nginx
-if [ "`which nginx`" == "" ]
+if ! which nginx
 then
 	yum install -y nginx || apt-get install -y nginx
 else
-	if [ "`which nginx`" == "" ]
+	if ! which nginx
 	then
 		continue=false
 	fi
