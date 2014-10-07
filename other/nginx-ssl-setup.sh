@@ -25,11 +25,11 @@ optCompany=
 ##- Prereqs
 
 ## Expect
-if [ "`which expect`" == "" ]
+if ! which expect
 then
 	yum install -y expect || apt-get install -y expect
 else
-	if [ "`which expect`" == "" ]
+	if ! which expect
 	then
 		continue=false
 	fi
@@ -114,48 +114,3 @@ else
 	echo "Cannot generate"
 	exit 1
 fi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
